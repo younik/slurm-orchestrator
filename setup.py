@@ -6,7 +6,7 @@ install_requires = [
 
 
 setuptools.setup(
-    name='slurm-orchestrator',
+    name='slurm_orchestrator',
     version='0.0.1a',
     description='Slurm launcher for Machine Learning',
     url='https://github.com/younik/slurm-orchestrator',

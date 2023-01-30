@@ -1,6 +1,7 @@
+import json
 import logging
 import pathlib
-from typing import Dict
+from typing import Dict, Union
 from .slurm_utils import srun_launch, sbatch_launch
 
 
@@ -9,7 +10,11 @@ __all__ = ["launch"]
 MANDATORY_PARAMS = {"name", "group", "main"}
 
 
-def launch(config: Dict, map_config: Dict[str, Dict] = {}):
+def launch(config: Union[Dict, str, pathlib.Path], map_config: Dict[str, Dict] = {}):
+    if not isinstance(config, Dict):
+        with open(config) as file:
+            config = json.load(file)
+    
     for param_name, map_ in map_config.items():
         value = config[param_name]
         config.update(map_[value])
