@@ -53,7 +53,6 @@ def _sbatch_template(config: dict) -> str:
     batch_script += " \n srun python main.py"
     batch_script += f" {serialize_main_args(config)} --jobid=$SLURM_JOBID"
 
-    import pdb; pdb.set_trace()
     return batch_script
 
 def sbatch_launch(config: dict, n_launches: int = 1):
