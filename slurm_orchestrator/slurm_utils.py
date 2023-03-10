@@ -1,3 +1,4 @@
+import pathlib
 from typing import List
 import subprocess
 import tempfile
@@ -15,7 +16,7 @@ def serialize_main_args(config: dict) -> str:
 
 
 def _get_slurm_args(config: dict) -> List[str]:
-    name = config["name"]
+    name = config.get("name", "unnamed")
     stdout_path = config["stdout_path"]
     args = [
         f"--job-name={name}",
@@ -48,10 +49,12 @@ def _sbatch_template(config: dict) -> str:
     slurm_args = _get_slurm_args(config)
 
     batch_script = "#!/bin/bash"
-    batch_script += '\n'.join(slurm_args)
-    batch_script += "\nsrun python main.py"
+    batch_script += "\n".join(slurm_args)
+    batch_script += " \n srun python main.py"
     batch_script += f" {serialize_main_args(config)} --jobid=$SLURM_JOBID"
 
+    import pdb; pdb.set_trace()
+    return batch_script
 
 def sbatch_launch(config: dict, n_launches: int = 1):
     f = tempfile.NamedTemporaryFile(mode="w", suffix=".sbatch", delete=False)
@@ -65,5 +68,7 @@ def sbatch_launch(config: dict, n_launches: int = 1):
 def srun_launch(config: dict):
     slurm_args = _get_slurm_args(config)
     slurm_args = filter(lambda arg: not arg.startswith("--output"), slurm_args)
-    slurm_args.append(f"python main.py {serialize_main_args(config)}")
+    slurm_args = list(slurm_args)
+    path = pathlib.Path(__file__).parent
+    slurm_args.append(f"python {path}/main.py {serialize_main_args(config)}")
     subprocess.call(' '.join(["srun", *slurm_args]), shell=True)

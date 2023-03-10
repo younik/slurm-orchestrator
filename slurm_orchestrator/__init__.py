@@ -7,8 +7,6 @@ from .slurm_utils import srun_launch, sbatch_launch
 
 __all__ = ["launch"]
 
-MANDATORY_PARAMS = {"name", "group", "main"}
-
 
 def launch(config: Union[Dict, str, pathlib.Path], map_config: Dict[str, Dict] = {}):
     if not isinstance(config, Dict):
@@ -20,15 +18,11 @@ def launch(config: Union[Dict, str, pathlib.Path], map_config: Dict[str, Dict] =
         config.update(map_[value])
         config.pop(param_name)
 
-    if not MANDATORY_PARAMS.issubset(config.keys()):
-        missing_params = MANDATORY_PARAMS.difference(config.keys())
-        raise ValueError(f"Missing parameters {missing_params} in config")
-
-    _make_paths()
+    _make_paths(config)
 
     n_launches = config.pop("n_launches", 1)
     interactive = config.get("interactive", False)
-    if interactive and not n_launches != 1:
+    if interactive and n_launches != 1:
         logging.warning("Interactive mode: ignoring n_launches argument.")
 
     if interactive:
@@ -38,13 +32,13 @@ def launch(config: Union[Dict, str, pathlib.Path], map_config: Dict[str, Dict] =
 
 
 def _make_paths(config):
-    path = pathlib.Path(__file__).parent
+    path = pathlib.Path.cwd()
     config["path"] = path
 
-    out_path = path.joinpath("outs", config["group"])
-    path.mkdir(parents=True, exist_ok=True)
+    out_path = path.joinpath("outs", config.get("group", ""))
+    out_path.mkdir(parents=True, exist_ok=True)
     config["out_path"] = out_path
-
+    
     stdout_path = out_path.joinpath("stdout")
     stdout_path.mkdir(exist_ok=True)
     config["stdout_path"] = stdout_path
