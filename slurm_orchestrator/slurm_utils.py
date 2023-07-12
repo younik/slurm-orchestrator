@@ -48,9 +48,10 @@ def _get_slurm_args(config: dict) -> List[str]:
 def _sbatch_template(config: dict) -> str:
     slurm_args = _get_slurm_args(config)
 
-    batch_script = "#!/bin/bash"
-    batch_script += "\n".join(slurm_args)
-    batch_script += " \n srun python main.py"
+    batch_script = "#!/bin/bash\n"
+    batch_script += "\n#SBATCH ".join(slurm_args)
+    file_folder = pathlib.Path(__file__).parent
+    batch_script += f" \n srun python {file_folder}/main.py"
     batch_script += f" {serialize_main_args(config)} --jobid=$SLURM_JOBID"
 
     return batch_script

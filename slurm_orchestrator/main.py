@@ -6,6 +6,7 @@ import sys
 import traceback
 import wandb
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--main', type=str, help='File name to launch (without .py)')
 parser.add_argument('--path', type=str, help='Path used for this run')
@@ -87,5 +88,6 @@ def _launch_module(_):
 
 if __name__ == "__main__":
     parsed, _ = parser.parse_known_args()
+    sys.path.append(parsed.path)  # needed for relative import in main
     _import_module(f"{parsed.path}/{parsed.main}.py")
     app.run(_launch_module)
