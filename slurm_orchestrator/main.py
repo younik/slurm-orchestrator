@@ -31,6 +31,13 @@ flags.DEFINE_bool('interactive', False, 'Launch in interactive mode')
 flags.DEFINE_integer('seed', None, 'Seed of the run')
 flags.DEFINE_string('unique_name', None, 'Unique name (you do not need to set this)')
 
+flags.DEFINE_integer('nodes', None, 'SLURM: Number of nodes')
+flags.DEFINE_integer('ntasks_per_node', None, 'SLURM: Number of tasks per node')
+flags.DEFINE_integer('cpus', None, 'SLURM: Number of cpus per node')
+flags.DEFINE_string('mem_per_cpu', None, 'SLURM: Amount of memory per cpu')
+flags.DEFINE_integer('gpus_per_node', None, 'SLURM: Number of gpus per node')
+flags.DEFINE_integer('timeout', None, 'SLURM: Timeout for the job')
+
 
 def _import_module(path: str):
     spec = importlib.util.spec_from_file_location("launch_module", path)
@@ -55,7 +62,7 @@ def _launch_module(_):
                 name=config.name,
                 group=config.group,
                 config=config.flag_values_dict(),
-                settings=wandb.Settings(start_method='fork'),
+                dir=config.log_path,
                 sync_tensorboard=True,
                 save_code=True,
             )
