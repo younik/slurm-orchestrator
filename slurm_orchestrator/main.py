@@ -65,6 +65,7 @@ def _launch_module(_):
                 dir=config.log_path,
                 sync_tensorboard=True,
                 save_code=True,
+                settings=wandb.Settings(start_method='fork')
             )
 
             vars(config).update(wandb.config)
