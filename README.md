@@ -12,7 +12,7 @@ Slurm Orchestrator is a Python library designed to simplify the process of runni
 6. [Disclaimer](#Disclaimer)
 
 
-# Installation
+## Installation
 
 To get started with Slurm Orchestrator, you can install it using pip:
 
@@ -20,11 +20,11 @@ To get started with Slurm Orchestrator, you can install it using pip:
 pip install git+https://github.com/younik/slurm-orchestrator.git
 ```
 
-# Getting Started
+## Getting Started
 
 Before using Slurm Orchestrator, you should have access to a Slurm cluster and have the Weights and Biases (WandB) library installed. Make sure you have your Slurm environment properly configured, with `WANDB_API_KEY` properly set.
 
-# Usage
+## Usage
 
 To use Slurm Orchestrator, follow these steps:
 
@@ -48,7 +48,7 @@ In your launcher file, specify the main key with the name of the Python file (wi
 You can also define other configuration flags using the absl library. Slurm Orchestrator supports various flags to customize your job execution (see Flags section for details).
 Execute your launcher script on the Slurm cluster to launch your machine learning job.
 
-# Flags
+## Flags
 
 Here is a list of supported flags that you can add to the launch dictionary:
 
@@ -72,11 +72,11 @@ Moreover the standard Slurm flags are available:
  - **gpus_per_node**: Number of GPUs per node.
  - **timeout**: Timeout for the Slurm job.
 
-# Contributing
+## Contributing
 
 If you would like to contribute to Slurm Orchestrator or report issues, you are welcome to open an issue or a PR.
 
-# Disclaimer
+## Disclaimer
 
 This project was done for personal purpose while running RL experiments on ETH Zurich cluster. This README file is written by an LLM.
 
