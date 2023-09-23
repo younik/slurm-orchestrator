@@ -61,6 +61,7 @@ Here is a list of supported flags that you can add to the launch dictionary:
  - **profile**: Profile code execution (default: False).
  - **interactive**: Launch in interactive mode (default: False).
  - **seed**: Seed for the run.
+ - **path**: Path containing the main file (default: current shell directory).
 
 
 Moreover the standard Slurm flags are available:
